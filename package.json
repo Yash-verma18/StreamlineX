@@ -1,5 +1,5 @@
 {
-  "name": "Scaleable-WebSockets",
+  "name": "scaleable-webSockets",
   "private": true,
   "scripts": {
     "build": "turbo build",
