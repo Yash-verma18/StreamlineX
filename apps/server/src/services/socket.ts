@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 import Redis from 'ioredis';
-import prismaClient from './prisma';
+
 import { produceMessage } from './kafka';
 require('dotenv').config();
 
