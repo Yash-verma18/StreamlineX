@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import Redis from 'ioredis';
+import prismaClient from './prisma';
 require('dotenv').config();
 
 // for Publishing to Redis
@@ -49,10 +50,16 @@ class SocketService {
       });
     });
 
-    sub.on('message', (channel, message) => {
+    sub.on('message', async (channel, message) => {
       if (channel === 'MESSAGES') {
         console.log('Message Received', message);
         io.emit('message', message);
+
+        await prismaClient.message.create({
+          data: {
+            text: message,
+          },
+        });
       }
     });
   }
