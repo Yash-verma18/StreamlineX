@@ -39,33 +39,33 @@ class SocketService {
     io.on('connect', (socket) => {
       console.log('New Socket Connected', socket.id);
 
-      socket.on('event:message', async ({ message }: { message: string }) => {
-        console.log('New Message Recieved', message);
-        // publish this message to redis.
-        await pub.publish(
-          'MESSAGES',
-          JSON.stringify({
-            message,
-          })
-        );
-      });
+      socket.on(
+        'event:message',
+        async (message: { text: string; userType: string }) => {
+          console.log('New Message Recieved', message);
+
+          // publish this message to redis.
+          await pub.publish(
+            'MESSAGES',
+            JSON.stringify({
+              message,
+            })
+          );
+        }
+      );
     });
 
-    sub.on('message', async (channel, message) => {
-      if (channel === 'MESSAGES') {
-        console.log('Message Received', message);
-        io.emit('message', message);
-
-        // await prismaClient.message.create({
-        //   data: {
-        //     text: message,
-        //   },
-        // });
-
-        await produceMessage(message);
-        console.log('message produced to kafka broker');
+    sub.on(
+      'message',
+      async (channel, message: { text: string; userType: string }) => {
+        if (channel === 'MESSAGES') {
+          console.log('Message Received', message);
+          io.emit('message', message);
+          await produceMessage(message);
+          console.log('message produced to kafka broker');
+        }
       }
-    });
+    );
   }
 
   get io() {

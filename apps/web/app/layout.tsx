@@ -1,8 +1,16 @@
 import type { Metadata } from 'next';
+
 import localFont from 'next/font/local';
 import './globals.css';
 
 import { SocketProvider } from './context/SocketProvider';
+import { Sixtyfour } from 'next/font/google';
+
+const sixtyfour = Sixtyfour({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: '400',
+});
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -25,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <SocketProvider>
-      <html lang='en'>
+      <html lang='en' className={sixtyfour.className}>
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           {children}
         </body>

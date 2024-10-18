@@ -31,7 +31,7 @@ export async function createProducer() {
   return producer;
 }
 
-export async function produceMessage(message: string) {
+export async function produceMessage(message: any) {
   const producer = await createProducer();
 
   await producer.send({
